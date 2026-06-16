@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base target="_top">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+    }
+
+    body {
+      min-height: 100vh;
+      padding: 18px;
+      font-family: Arial, sans-serif;
+      color: #ffffff;
+
+      background-image:
+        linear-gradient(
+          rgba(0, 0, 0, 0.35),
+          rgba(0, 0, 0, 0.35)
+        ),
+        url("https://masjidkarangkajen.com/Nitip_file/BG_Rahmatmh_trisihono_suryautama.png");
+
+      background-size: cover;
+      background-position: center center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 460px;
+      margin-top: 28px;
+      padding: 24px;
+      border-radius: 22px;
+      background: rgba(20, 20, 20, 0.78);
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.35);
+      backdrop-filter: blur(8px);
+    }
+
+    h2 {
+      text-align: center;
+      margin-top: 0;
+      margin-bottom: 8px;
+      font-size: 24px;
+      color: #ffffff;
+    }
+
+    .subtitle {
+      text-align: center;
+      margin-bottom: 22px;
+      font-size: 13px;
+      color: rgba(255, 255, 255, 0.75);
+      line-height: 1.5;
+    }
+
+    label {
+      display: block;
+      margin-top: 13px;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #ffffff;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 13px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      font-size: 15px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.12);
+      outline: none;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #60a5fa;
+      box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.25);
+    }
+
+    input::placeholder {
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    select option {
+      color: #000000;
+      background: #ffffff;
+    }
+
+    .readonly {
+      background: rgba(30, 64, 175, 0.35);
+      color: #ffffff;
+      font-weight: bold;
+    }
+
+    .hint {
+      margin-top: 6px;
+      font-size: 12px;
+      color: rgba(255, 255, 255, 0.7);
+      line-height: 1.4;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 20px;
+      padding: 14px;
+      border: none;
+      border-radius: 13px;
+      background: #0b57d0;
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0842a0;
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .status {
+      margin-top: 15px;
+      padding: 11px;
+      border-radius: 12px;
+      text-align: center;
+      font-weight: bold;
+      display: none;
+      line-height: 1.5;
+    }
+
+    .status.loading {
+      display: block;
+      background: rgba(254, 249, 195, 0.95);
+      color: #854d0e;
+    }
+
+    .status.success {
+      display: block;
+      background: rgba(220, 252, 231, 0.95);
+      color: #166534;
+    }
+
+    .status.error {
+      display: block;
+      background: rgba(254, 226, 226, 0.95);
+      color: #991b1b;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding: 14px;
+        align-items: flex-start;
+      }
+
+      .card {
+        max-width: 100%;
+        margin-top: 18px;
+        padding: 22px;
+        border-radius: 20px;
+      }
+
+      h2 {
+        font-size: 22px;
+      }
+
+      input,
+      select,
+      button {
+        font-size: 15px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="card">
+
+    <h2>💊 Jadwal Minum Obat</h2>
+
+    <div class="subtitle">
+      Catat jam terakhir minum obat, lalu sistem akan menghitung jadwal berikutnya secara otomatis.
+    </div>
+
+    <label>Nama Obat / Resep Dokter</label>
+    <input
+      type="text"
+      id="namaObat"
+      placeholder="Contoh: Paracetamol 500 mg">
+
+    <label>Terakhir Minum Obat Jam</label>
+    <input
+      type="time"
+      id="jamTerakhir"
+      onchange="hitungJamBerikutnya()"
+      oninput="hitungJamBerikutnya()">
+
+    <label>Minum Obat Berikutnya</label>
+    <input
+      type="text"
+      id="jamBerikutnya"
+      readonly
+      class="readonly"
+      placeholder="Akan terisi otomatis">
+
+    <label>Durasi (Jam)</label>
+    <input
+      type="number"
+      id="durasi"
+      value="8"
+      min="1"
+      placeholder="Contoh: 8"
+      onchange="hitungJamBerikutnya()"
+      oninput="hitungJamBerikutnya()">
+
+    <div class="hint">
+      Default 8 jam. Bisa diganti sesuai aturan minum obat, misalnya 6, 8, atau 12 jam.
+    </div>
+
+    <label>Kirim Google Calendar?</label>
+    <select id="kirimGcal">
+      <option value="Y">Ya</option>
+      <option value="N">Tidak</option>
+    </select>
+
+    <label>Add Guests (Email)</label>
+    <input
+      type="email"
+      id="guests"
+      placeholder="Opsional, contoh: keluarga@gmail.com">
+
+    <div class="hint">
+      Jika lebih dari satu email, pisahkan dengan koma.
+    </div>
+
+    <button
+      id="btnKirim"
+      onclick="kirimData()">
+      KIRIM
+    </button>
+
+    <div
+      id="status"
+      class="status">
+    </div>
+
+  </div>
+
+  <script>
+    function hitungJamBerikutnya() {
+      const jam = document.getElementById("jamTerakhir").value;
+      const durasiInput = document.getElementById("durasi").value;
+
+      let durasi = Number(durasiInput || 8);
+
+      if (!jam) {
+        document.getElementById("jamBerikutnya").value = "";
+        return;
+      }
+
+      if (!durasi || durasi < 1) {
+        durasi = 8;
+      }
+
+      const p = jam.split(":");
+
+      const d = new Date();
+
+      d.setHours(
+        parseInt(p[0]),
+        parseInt(p[1]),
+        0,
+        0
+      );
+
+      d.setHours(d.getHours() + durasi);
+
+      const hh = String(d.getHours()).padStart(2, "0");
+      const mm = String(d.getMinutes()).padStart(2, "0");
+
+      document.getElementById("jamBerikutnya").value = hh + ":" + mm;
+    }
+
+    function setStatus(tipe, pesan) {
+      const status = document.getElementById("status");
+
+      status.className = "status " + tipe;
+      status.innerHTML = pesan;
+    }
+
+    function kirimData() {
+      const btn = document.getElementById("btnKirim");
+
+      const namaObat = document.getElementById("namaObat").value.trim();
+      const jamTerakhir = document.getElementById("jamTerakhir").value;
+      const durasi = document.getElementById("durasi").value || 8;
+      const kirimGcal = document.getElementById("kirimGcal").value;
+      const guests = document.getElementById("guests").value.trim();
+
+      if (!namaObat) {
+        alert("Nama obat wajib diisi.");
+        return;
+      }
+
+      if (!jamTerakhir) {
+        alert("Jam terakhir minum wajib diisi.");
+        return;
+      }
+
+      if (!durasi || Number(durasi) < 1) {
+        alert("Durasi harus diisi minimal 1 jam.");
+        return;
+      }
+
+      btn.disabled = true;
+      btn.innerHTML = "MENYIMPAN...";
+
+      setStatus(
+        "loading",
+        "⏳ Menyimpan data..."
+      );
+
+      const data = {
+        namaObat: namaObat,
+        jamTerakhir: jamTerakhir,
+        durasi: durasi,
+        kirimGcal: kirimGcal,
+        guests: guests
+      };
+
+      google.script.run
+        .withSuccessHandler(function(res) {
+          setStatus(
+            "success",
+            "✅ " + res.message
+          );
+
+          document.getElementById("namaObat").value = "";
+          document.getElementById("jamTerakhir").value = "";
+          document.getElementById("jamBerikutnya").value = "";
+          document.getElementById("durasi").value = "8";
+          document.getElementById("kirimGcal").value = "Y";
+          document.getElementById("guests").value = "";
+
+          btn.disabled = false;
+          btn.innerHTML = "KIRIM";
+        })
+        .withFailureHandler(function(err) {
+          setStatus(
+            "error",
+            "❌ " + err.message
+          );
+
+          btn.disabled = false;
+          btn.innerHTML = "KIRIM";
+        })
+        .simpanData(data);
+    }
+  </script>
+
+</body>
+</html>
