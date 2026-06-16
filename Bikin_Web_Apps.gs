@@ -4,7 +4,7 @@
  *
  * Catatan:
  * - File HTML yang dipanggil: Bikin_Web_App_html
- * - Pastikan spreadsheet memiliki sheet bernama: Sheet2
+ * - Pastikan spreadsheet memiliki sheet bernama: Sheet1
  * - Deploy disarankan:
  *   Execute as: Me
  *   Who has access: Only myself
@@ -20,14 +20,14 @@ function doGet() {
 }
 
 function simpanData(data) {
-  const SHEET_NAME = "Sheet2";
+  const SHEET_NAME = "Sheet1";
 
   const sheet = SpreadsheetApp
     .getActiveSpreadsheet()
     .getSheetByName(SHEET_NAME);
 
   if (!sheet) {
-    throw new Error("Sheet2 tidak ditemukan.");
+    throw new Error("Sheet1 tidak ditemukan.");
   }
 
   const namaObat = String(data.namaObat || "").trim();
