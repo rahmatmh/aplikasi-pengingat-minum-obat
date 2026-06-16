@@ -9,12 +9,12 @@ FITUR
 
 * Input Nama Obat / Resep Dokter
 * Input Jam Terakhir Minum Obat
-* Perhitungan otomatis Jam Minum Berikutnya (+8 jam)
+* Perhitungan otomatis Jam Minum Berikutnya 
 * Simpan data ke Google Sheets
 * Otomatis membuat Event Google Calendar
 * Reminder 30 menit sebelum waktu minum obat
 * Dukungan Guest Email (undangan Google Calendar)
-* Mobile Friendly
+* Mobile Friendly (responsive design)
 * Dapat digunakan sebagai Web App di Android maupun iPhone
 
 ---
@@ -23,7 +23,7 @@ STRUKTUR FILE
 
 Bikin_Web_App.gs
 
-Bikin_Web_App.html
+Bikin_Web_App_html.html
 
 README.txt
 
@@ -81,7 +81,7 @@ Buat dua file:
 
 Bikin_Web_App.gs
 
-Bikin_Web_App.html
+Bikin_Web_App_html.html
 
 Kemudian salin seluruh kode yang telah disediakan.
 
@@ -143,7 +143,7 @@ Nama Obat      : Paracetamol
 
 Jam Terakhir   : 19:15
 
-Durasi         : 8 Jam
+Durasi         : 8 Jam (default)
 
 Perhitungan Sistem:
 
@@ -157,7 +157,7 @@ End Time   = 03:15
 
 Keterangan:
 
-* Jam berikutnya dihitung otomatis 8 jam setelah jam terakhir minum obat.
+* Jam berikutnya dihitung otomatis berapa jam setelah jam terakhir minum obat. Defaultnya 8 jam. 
 * Event kalender dimulai 30 menit sebelum jadwal minum berikutnya.
 * Event selesai tepat pada jadwal minum berikutnya.
 * Popup reminder dikirim 30 menit sebelumnya.
